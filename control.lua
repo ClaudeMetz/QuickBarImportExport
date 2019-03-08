@@ -1,6 +1,12 @@
 require("mod-gui")
 require("util")
 
+script.on_configuration_changed(function()
+    for _, player in pairs(game.players) do
+        gui_init(player)
+    end
+end)
+
 script.on_event(defines.events.on_player_created, function(event)
     local player = game.players[event.player_index]
     gui_init(player)
@@ -164,6 +170,8 @@ function apply_import_string(player, string)
     for index, name in ipairs(quickbar_names) do
         if name ~= "" then
             player.set_quick_bar_slot(index, name)
+        else
+            player.set_quick_bar_slot(index, nil)
         end
     end
 end
