@@ -78,7 +78,8 @@ function gui_init(player)
 end
 
 function gui_reset(player)
-    mod_gui.get_button_flow(player)["qbie_flow_choose_action"].clear()
+    local button_flow = mod_gui.get_button_flow(player)["qbie_flow_choose_action"]
+    if button_flow then button_flow.clear() end
     local window = mod_gui.get_frame_flow(player)["qbie_frame_main_window"]
     if window then window.destroy() end
 end
@@ -188,8 +189,8 @@ function generate_export_string(player)
     local quickbar_names = {}
     for i=1, 100 do
         local slot = player.get_quick_bar_slot(i)
-        if slot ~= nil and slot.type ~= "blueprint" and slot.type ~= "upgrade-item"
-          and slot.type ~= "deconstruction-item" and slot.type ~= "blueprint-book" then
+        if slot ~= nil--[[  and slot.type ~= "blueprint" and slot.type ~= "upgrade-item"
+          and slot.type ~= "deconstruction-item" and slot.type ~= "blueprint-book" ]] then
             table.insert(quickbar_names, slot.name)
         else
             table.insert(quickbar_names, "")
