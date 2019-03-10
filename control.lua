@@ -18,7 +18,7 @@ script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
 
     if event.setting == "qbie_display_gui_button" then
         local value = settings.get_player_settings(player)["qbie_display_gui_button"].value
-        mod_gui.get_frame_flow(player)["qbie_flow_choose_action"].visible = value
+        mod_gui.get_button_flow(player)["qbie_flow_choose_action"].visible = value
     end
 end)
 
@@ -64,37 +64,39 @@ end)
 
 
 function gui_init(player)
-    local frame_flow = mod_gui.get_frame_flow(player)
+    local frame_flow = mod_gui.get_button_flow(player)
     if not frame_flow["qbie_flow_choose_action"] then
         local flow = frame_flow.add{type="flow", name="qbie_flow_choose_action", direction="horizontal"}
         flow.visible = settings.get_player_settings(player)["qbie_display_gui_button"].value
-        flow.add{type="button", name="qbie_button_show_options", caption="QBIE", tooltip={"tooltip.action_tip"},
-          style=mod_gui.button_style}
+    end
+    
+    local flow = frame_flow["qbie_flow_choose_action"]
+    if not flow["qbie_button_show_options"] then
+        flow.add{type="sprite-button", name="qbie_button_show_options", sprite="utility/import_slot",
+          tooltip={"tooltip.action_tip"}, style=mod_gui.button_style}
     end
 end
 
 function gui_reset(player)
-    local gui_elements = {
-        mod_gui.get_frame_flow(player)["qbie_flow_choose_action"],
-        player.gui.left["qbie_frame_main_window"]
-    }
-    for _, element in pairs(gui_elements) do
-        if element ~= nil then element.destroy() end
-    end
+    mod_gui.get_button_flow(player)["qbie_flow_choose_action"].clear()
+    local window = mod_gui.get_frame_flow(player)["qbie_frame_main_window"]
+    if window then window.destroy() end
 end
 
 
 function show_actions(player)
-    if player.gui.left["qbie_frame_main_window"] == nil then
-        local flow = mod_gui.get_frame_flow(player)["qbie_flow_choose_action"]
+    if mod_gui.get_frame_flow(player)["qbie_frame_main_window"] == nil then
+        local flow = mod_gui.get_button_flow(player)["qbie_flow_choose_action"]
         flow["qbie_button_show_options"].visible = false
-        flow.add{type="button", name="qbie_button_import",  caption={"label.import"}, style=mod_gui.button_style}
-        flow.add{type="button", name="qbie_button_export",  caption={"label.export"}, style=mod_gui.button_style}
+        flow.add{type="button", name="qbie_button_import", caption={"label.import"}, style=mod_gui.button_style}
+        flow.add{type="button", name="qbie_button_export", caption={"label.export"}, style=mod_gui.button_style}
+    else
+        toggle_main_window(player, nil, "close")
     end
 end
 
 function hide_actions(player)
-    local flow = mod_gui.get_frame_flow(player)["qbie_flow_choose_action"]
+    local flow = mod_gui.get_button_flow(player)["qbie_flow_choose_action"]
     flow["qbie_button_show_options"].visible = true
     if flow["qbie_button_import"] then flow["qbie_button_import"].destroy() end
     if flow["qbie_button_export"] then flow["qbie_button_export"].destroy() end
@@ -102,7 +104,7 @@ end
 
 
 function toggle_main_window(player, type, action)
-    local window = player.gui.left["qbie_frame_main_window"]
+    local window = mod_gui.get_frame_flow(player)["qbie_frame_main_window"]
     if window == nil then
         create_main_window(player, type)
     else
@@ -123,8 +125,8 @@ end
 function create_main_window(player, type)
     hide_actions(player)
 
-    local window = player.gui.left.add{type="frame", name="qbie_frame_main_window", direction="vertical"}
-    window.caption = {"label." .. type}
+    local window = mod_gui.get_frame_flow(player).add{type="frame", name="qbie_frame_main_window",
+      direction="vertical", style="inner_frame_in_outer_frame", caption={"label." .. type}}
 
     window.add{type="label", name="qbie_label_warning", caption={"label." .. type .. "_warning"}}
 
@@ -140,9 +142,7 @@ function create_main_window(player, type)
     text_box.style.bottom_margin = 6
     text_box.word_wrap = true
 
-    if type == "export" then
-        text_box.text = generate_export_string(player)
-    end
+    if type == "export" then text_box.text = generate_export_string(player) end
     text_box.focus()
 
     local button_bar = window.add{type="flow", name="qbite_flow_button_bar", direction="horizontal"}
@@ -156,7 +156,7 @@ function create_main_window(player, type)
 end
 
 function close_main_window(player, action)
-    local window = player.gui.left["qbie_frame_main_window"]
+    local window = mod_gui.get_frame_flow(player)["qbie_frame_main_window"]
 
     local error_message
     if action == "submit" then  
