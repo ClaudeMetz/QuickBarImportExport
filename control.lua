@@ -34,6 +34,16 @@ script.on_event("qbie_export", function(event)
 end)
 
 
+script.on_event(defines.events.on_lua_shortcut, function(event)
+    local player = game.players[event.player_index]
+    if event.prototype_name == "qbie-import-quickbar" then
+        toggle_main_window(player, "import", "close")
+    elseif event.prototype_name == "qbie-export-quickbar" then
+        toggle_main_window(player, "export", "close")
+    end
+end)
+
+
 script.on_event(defines.events.on_gui_click, function(event)
     local player = game.players[event.player_index]
 
