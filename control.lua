@@ -47,7 +47,10 @@ end)
 script.on_event(defines.events.on_gui_click, function(event)
     local player = game.players[event.player_index]
 
-    if event.element.name == "qbie_button_show_options" then
+    if event.element.type == "text-box" then
+        event.element.select_all()
+
+    elseif event.element.name == "qbie_button_show_options" then
         show_actions(player)
     elseif event.element.name == "qbie_button_import" then
         toggle_main_window(player, "import", "close")
@@ -129,12 +132,13 @@ function create_main_window(player, type)
     local window = mod_gui.get_frame_flow(player).add{type="frame", name="qbie_frame_main_window",
       direction="vertical", style="inner_frame_in_outer_frame", caption={"label." .. type}}
 
-    window.add{type="label", name="qbie_label_warning", caption={"label." .. type .. "_warning"}}
+    local label_warning = window.add{type="label", name="qbie_label_warning", caption={"label." .. type .. "_warning"}}
+    label_warning.tooltip = {"label." .. type .. "_warning_tooltip"}
 
-    local error_message = window.add{type="label", name="qbie_label_error_message", caption=""}
-    error_message.style.font_color = {r = 1, g = 0.2, b = 0.2}
-    error_message.style.single_line = false
-    error_message.visible = false
+    local label_error = window.add{type="label", name="qbie_label_error_message", caption=""}
+    label_error.style.font_color = {r = 1, g = 0.2, b = 0.2}
+    label_error.style.single_line = false
+    label_error.visible = false
 
     local text_box = window.add{type="text-box", name="qbie_text-box_quickbar_string"}
     text_box.style.width = 450
@@ -143,7 +147,10 @@ function create_main_window(player, type)
     text_box.style.bottom_margin = 6
     text_box.word_wrap = true
 
-    if type == "export" then text_box.text = generate_export_string(player) end
+    if type == "export" then
+        text_box.text = generate_export_string(player)
+        text_box.select_all()
+    end
     text_box.focus()
 
     local button_bar = window.add{type="flow", name="qbite_flow_button_bar", direction="horizontal"}
@@ -189,7 +196,7 @@ function generate_export_string(player)
     local quickbar_names = {}
     for i=1, 100 do
         local slot = player.get_quick_bar_slot(i)
-        if slot ~= nil--[[  and slot.type ~= "blueprint" and slot.type ~= "upgrade-item"
+        if slot ~= nil --[[ and slot.type ~= "blueprint" and slot.type ~= "upgrade-item"
           and slot.type ~= "deconstruction-item" and slot.type ~= "blueprint-book" ]] then
             table.insert(quickbar_names, slot.name)
         else
