@@ -8,14 +8,13 @@ script.on_configuration_changed(function()
 end)
 
 script.on_event(defines.events.on_player_created, function(event)
-    local player = game.players[event.player_index]
+    local player = game.get_player(event.player_index)
     gui_init(player)
 end)
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
-    local player = game.players[event.player_index]
-
     if event.setting == "qbie_display_gui_button" then
+        local player = game.get_player(event.player_index)
         local value = settings.get_player_settings(player)["qbie_display_gui_button"].value
         mod_gui.get_button_flow(player)["qbie_flow_choose_action"].visible = value
     end
@@ -23,18 +22,18 @@ end)
 
 
 script.on_event("qbie_import", function(event)
-    local player = game.players[event.player_index]
+    local player = game.get_player(event.player_index)
     toggle_main_window(player, "import", "close")
 end)
 
 script.on_event("qbie_export", function(event)
-    local player = game.players[event.player_index]
+    local player = game.get_player(event.player_index)
     toggle_main_window(player, "export", "close")
 end)
 
 
 script.on_event(defines.events.on_lua_shortcut, function(event)
-    local player = game.players[event.player_index]
+    local player = game.get_player(event.player_index)
     if event.prototype_name == "qbie-import-quickbar" then
         toggle_main_window(player, "import", "close")
     elseif event.prototype_name == "qbie-export-quickbar" then
@@ -44,7 +43,7 @@ end)
 
 
 script.on_event(defines.events.on_gui_click, function(event)
-    local player = game.players[event.player_index]
+    local player = game.get_player(event.player_index)
 
     if event.element.type == "text-box" then
         event.element.select_all()

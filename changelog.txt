@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.18.2
+Date: 18. 02. 2020
+  Bugfixes:
+    - Fixed a crash that happened when any global mod setting was changed
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.1
 Date: 18. 02. 2020
   Bugfixes:
@@ -14,21 +20,21 @@ Date: 21. 01. 2020
 Version: 0.17.6
 Date: 12. 03. 2019
   Features:
-    - The import/export text will now be selected automatically.
+    - The import/export text will now be selected automatically
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.5
 Date: 10. 03. 2019
   Features:
-    - Blueprints will now show up as empty blueprints on import again.
+    - Blueprints will now show up as empty blueprints on import again
   Bugfixes:
-    - Fix crash when loading into existing save.
+    - Fix crash when loading into existing save
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.4
 Date: 10. 03. 2019
   Bugfixes:
-    - Fix GUI-button not lining up with other buttons.
+    - Fix GUI-button not lining up with other buttons
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.17.3
