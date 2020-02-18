@@ -1,5 +1,4 @@
 require("mod-gui")
-require("util")
 
 script.on_configuration_changed(function()
     for _, player in pairs(game.players) do
@@ -168,7 +167,7 @@ function close_main_window(player, action)
 
     local error_message
     if action == "submit" then  
-        local item_table = game.json_to_table(util.decode(window["qbie_text-box_quickbar_string"].text))
+        local item_table = game.json_to_table(game.decode_string(window["qbie_text-box_quickbar_string"].text))
         if item_table == nil then
             error_message = {"label.error_invalid_string"}
         else
@@ -203,7 +202,7 @@ function generate_export_string(player)
             table.insert(quickbar_names, "")
         end
     end
-    return util.encode(game.table_to_json(quickbar_names))
+    return game.encode_string(game.table_to_json(quickbar_names))
 end
 
 function import_item(player, index, name)

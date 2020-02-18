@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.18.1
+Date: 18. 02. 2020
+  Bugfixes:
+    - Fixed a crash that was caused by a change in the Factorio API in version 0.18.7. Quickbar strings exported before this version will sadly not work anymore. You'll need to create a new one with the new version.
+
+---------------------------------------------------------------------------------------------------
 Version: 0.18.0
 Date: 21. 01. 2020
   Features:

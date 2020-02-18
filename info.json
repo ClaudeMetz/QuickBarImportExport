@@ -1,9 +1,9 @@
 {
     "name": "quickbarimportexport",
-    "version": "0.18.0",
+    "version": "0.18.1",
     "title": "QuickBar Import/Export",
     "author": "Therenas",
     "factorio_version": "0.18",
-    "dependencies": ["base >= 0.18.0"],
+    "dependencies": ["base >= 0.18.7"],
     "description": "Allows you to export your current quickbar and import it in a different save."
 }
