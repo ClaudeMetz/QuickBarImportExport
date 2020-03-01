@@ -129,10 +129,10 @@ function create_main_window(player, type)
 
     local window = mod_gui.get_frame_flow(player).add{type="frame", name="qbie_frame_main_window",
       direction="vertical", style="inner_frame_in_outer_frame", caption={"label." .. type}}
-    window.style.height = 300
 
-    local label_warning = window.add{type="label", name="qbie_label_warning", caption={"label." .. type .. "_warning"}}
-    label_warning.tooltip = {"label." .. type .. "_warning_tooltip"}
+    local label_warning = window.add{type="label", name="qbie_label_warning", caption={"label." .. type .. "_warning"},
+      tooltip={"label." .. type .. "_warning_tooltip"}}
+    label_warning.style.single_line = false
 
     local label_error = window.add{type="label", name="qbie_label_error_message", caption=""}
     label_error.style.font_color = {r = 1, g = 0.2, b = 0.2}
@@ -140,11 +140,10 @@ function create_main_window(player, type)
     label_error.visible = false
 
     local text_box = window.add{type="text-box", name="qbie_text-box_quickbar_string"}
-    text_box.style.width = 450
-    text_box.style.vertically_stretchable = true
+    text_box.style.height = 40
+    text_box.style.width = 400
     text_box.style.top_margin = 4
     text_box.style.bottom_margin = 6
-    text_box.word_wrap = true
 
     if type == "export" then
         text_box.text = generate_export_string(player)
@@ -186,6 +185,7 @@ function close_main_window(player, action)
             local error_message_label = window["qbie_label_error_message"]
             error_message_label.visible = true
             error_message_label.caption = error_message
+            window["qbie_label_warning"].visible = false
 
             window["qbie_text-box_quickbar_string"].focus()
             return  -- Early return so the window doesn't close
