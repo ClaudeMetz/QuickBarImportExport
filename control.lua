@@ -165,14 +165,19 @@ function close_main_window(player, action)
     local window = mod_gui.get_frame_flow(player)["qbie_frame_main_window"]
 
     local error_message
-    if action == "submit" then  
-        local item_table = game.json_to_table(game.decode_string(window["qbie_text-box_quickbar_string"].text))
-        if item_table == nil then
+    if action == "submit" then
+        local encoded_string = window["qbie_text-box_quickbar_string"].text
+        if encoded_string == "" then
             error_message = {"label.error_invalid_string"}
         else
-            for index, name in ipairs(item_table) do
-                local status = pcall(import_item, player, index, name)
-                if not status then error_message = {"label.error_invalid_item"} end
+            local decoded_string = game.decode_string(encoded_string)
+            if decoded_string == nil then
+                error_message = {"label.error_invalid_string"}
+            else
+                for index, name in ipairs(game.json_to_table(decoded_string)) do
+                    local status = pcall(import_item, player, index, name)
+                    if not status then error_message = {"label.error_invalid_item"} end
+                end
             end
         end
 
@@ -194,8 +199,7 @@ function generate_export_string(player)
     local quickbar_names = {}
     for i=1, 100 do
         local slot = player.get_quick_bar_slot(i)
-        if slot ~= nil --[[ and slot.type ~= "blueprint" and slot.type ~= "upgrade-item"
-          and slot.type ~= "deconstruction-item" and slot.type ~= "blueprint-book" ]] then
+        if slot ~= nil then
             table.insert(quickbar_names, slot.name)
         else
             table.insert(quickbar_names, "")
