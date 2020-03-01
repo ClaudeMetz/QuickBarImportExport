@@ -2,7 +2,7 @@
 Version: 0.18.3
 Date: 01. 03. 2020
   Bugfixes:
-    - Fixed a crash when inputting an invalid encoded string
+    - Fixed a crash when inputting an invalidly encoded string
 
 ---------------------------------------------------------------------------------------------------
 Version: 0.18.2

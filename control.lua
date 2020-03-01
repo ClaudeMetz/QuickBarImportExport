@@ -129,6 +129,7 @@ function create_main_window(player, type)
 
     local window = mod_gui.get_frame_flow(player).add{type="frame", name="qbie_frame_main_window",
       direction="vertical", style="inner_frame_in_outer_frame", caption={"label." .. type}}
+    window.style.height = 300
 
     local label_warning = window.add{type="label", name="qbie_label_warning", caption={"label." .. type .. "_warning"}}
     label_warning.tooltip = {"label." .. type .. "_warning_tooltip"}
@@ -140,7 +141,7 @@ function create_main_window(player, type)
 
     local text_box = window.add{type="text-box", name="qbie_text-box_quickbar_string"}
     text_box.style.width = 450
-    text_box.style.height = 200
+    text_box.style.vertically_stretchable = true
     text_box.style.top_margin = 4
     text_box.style.bottom_margin = 6
     text_box.word_wrap = true
