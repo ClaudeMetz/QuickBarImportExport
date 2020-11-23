@@ -1,4 +1,4 @@
-require("mod-gui")
+local mod_gui = require("mod-gui")
 
 script.on_configuration_changed(function()
     for _, player in pairs(game.players) do
@@ -70,7 +70,7 @@ function gui_init(player)
         local flow = frame_flow.add{type="flow", name="qbie_flow_choose_action", direction="horizontal"}
         flow.visible = settings.get_player_settings(player)["qbie_display_gui_button"].value
     end
-    
+
     local flow = frame_flow["qbie_flow_choose_action"]
     if not flow["qbie_button_show_options"] then
         flow.add{type="sprite-button", name="qbie_button_show_options", sprite="utility/import_slot",
